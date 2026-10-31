@@ -1,0 +1,234 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Scary Zone 🎃</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Creepster&family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+
+<style>
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  background: #100817;
+  color: white;
+  font-family: 'Poppins', sans-serif;
+  text-align: center;
+}
+
+h1, h2 {
+  font-family: 'Creepster', cursive;
+  color: #ff7518;
+}
+
+h1 { font-size: 55px; }
+h2 { font-size: 35px; }
+
+section {
+  padding: 45px 18px;
+  min-height: 350px;
+  border-bottom: 1px solid #49204f;
+}
+
+p { line-height: 1.7; }
+
+button {
+  background: #ff7518;
+  color: #160b1d;
+  border: none;
+  padding: 13px 22px;
+  margin: 8px;
+  border-radius: 10px;
+  font-weight: bold;
+  font-size: 15px;
+  cursor: pointer;
+}
+
+button:hover {
+  background: #ffc04d;
+  transform: scale(1.05);
+}
+
+.question, .card {
+  background: #24132e;
+  border: 1px solid #743c80;
+  border-radius: 15px;
+  padding: 20px;
+  max-width: 500px;
+  margin: 20px auto;
+}
+
+.result {
+  color: #ffc04d;
+  font-weight: bold;
+  margin-top: 20px;
+  min-height: 45px;
+}
+
+footer {
+  padding: 25px;
+  color: #ff7518;
+}
+</style>
+</head>
+
+<body>
+
+<section>
+  <h1>🎃 THE SCARY ZONE 🎃</h1>
+  <p>Welcome to the world of ghosts, witches and spooky surprises!</p>
+  <p>Enter if you dare... 👻</p>
+  <button onclick="document.getElementById('games').scrollIntoView({behavior:'smooth'})">
+    ENTER THE ZONE
+  </button>
+</section>
+
+<section id="games">
+  <h2>🍬 TRICK OR TREAT?</h2>
+  <p>Choose wisely. What will you get?</p>
+
+  <div class="card">
+    <button onclick="showTrick()">👻 TRICK</button>
+    <button onclick="showTreat()">🍭 TREAT</button>
+    <div class="result" id="trickResult" aria-live="polite"></div>
+  </div>
+</section>
+
+<section>
+  <h2>🧙 HALLOWEEN PERSONALITY TEST</h2>
+  <p>Answer all five questions to discover your spooky identity!</p>
+
+  <div class="question">
+    <p>1. Choose a place:</p>
+    <button onclick="answer(0,0)">Haunted house</button>
+    <button onclick="answer(0,1)">Dark forest</button>
+    <button onclick="answer(0,2)">Old castle</button>
+  </div>
+
+  <div class="question">
+    <p>2. Choose a power:</p>
+    <button onclick="answer(1,0)">Invisibility</button>
+    <button onclick="answer(1,1)">Magic</button>
+    <button onclick="answer(1,2)">Flying</button>
+  </div>
+
+  <div class="question">
+    <p>3. Choose a companion:</p>
+    <button onclick="answer(2,0)">Black cat</button>
+    <button onclick="answer(2,1)">Bat</button>
+    <button onclick="answer(2,2)">Little ghost</button>
+  </div>
+
+  <div class="question">
+    <p>4. Favourite Halloween colour?</p>
+    <button onclick="answer(3,0)">Black</button>
+    <button onclick="answer(3,1)">Purple</button>
+    <button onclick="answer(3,2)">Orange</button>
+  </div>
+
+  <div class="question">
+    <p>5. Pick your Halloween mood:</p>
+    <button onclick="answer(4,0)">Mysterious</button>
+    <button onclick="answer(4,1)">Mischievous</button>
+    <button onclick="answer(4,2)">Cute but spooky</button>
+  </div>
+
+  <button onclick="revealPersonality()">REVEAL MY PERSONALITY 🎃</button>
+  <div class="result" id="personalityResult" aria-live="polite"></div>
+</section>
+
+<section>
+  <h2>💀 ONE LAST SURPRISE</h2>
+  <p>You've made it this far...</p>
+  <button onclick="document.getElementById('finalMessage').textContent='👻 The ghosts approve of you! You are officially part of The Scary Zone!'">
+    OPEN THIS MESSAGE
+  </button>
+  <div class="result" id="finalMessage" aria-live="polite"></div>
+</section>
+
+<footer>
+  🎃 Happy Halloween! Stay spooky! 👻
+</footer>
+
+<script>
+const tricks = [
+  "👻 Make your creepiest ghost impression!",
+  "🎃 Talk like a witch for two minutes!",
+  "🦇 Send someone your best spooky emoji combination!",
+  "💀 Invent a scary name for yourself!",
+  "👻 Tell us your funniest ghost joke!"
+];
+
+const treats = [
+  "🍬 You deserve all the happiness in the world!",
+  "🍫 A virtual chocolate just for you!",
+  "🎃 You are the sweetest pumpkin here!",
+  "💜 Sending you a little Halloween magic!",
+  "✨ You have earned VIP ghost status!"
+];
+
+function randomItem(list) {
+  return list[Math.floor(Math.random() * list.length)];
+}
+
+function showTrick() {
+  document.getElementById("trickResult").textContent = randomItem(tricks);
+}
+
+function showTreat() {
+  document.getElementById("trickResult").textContent = randomItem(treats);
+}
+
+let answers = [null, null, null, null, null];
+
+function answer(question, choice) {
+  answers[question] = choice;
+  document.getElementById("personalityResult").textContent =
+    "Question " + (question + 1) + " answered! 🎃";
+}
+
+function revealPersonality() {
+  const result = document.getElementById("personalityResult");
+
+  if (answers.includes(null)) {
+    result.textContent = "👻 Answer all five questions first!";
+    return;
+  }
+
+  const types = [
+    ["Ghost", "Witch", "Vampire"],
+    ["Witch", "Vampire", "Ghost"],
+    ["Vampire", "Ghost", "Witch"],
+    ["Ghost", "Witch", "Vampire"],
+    ["Witch", "Vampire", "Ghost"]
+  ];
+
+  let scores = [0, 0, 0];
+
+  answers.forEach((choice, i) => {
+    const type = types[i][choice];
+    if (type === "Ghost") scores[0]++;
+    if (type === "Witch") scores[1]++;
+    if (type === "Vampire") scores[2]++;
+  });
+
+  const winner = scores.indexOf(Math.max(...scores));
+
+  const names = ["GHOST 👻", "WITCH 🧙", "VAMPIRE 🧛"];
+  const descriptions = [
+    "You are mysterious, playful and full of surprises!",
+    "You are clever, magical and wonderfully unpredictable!",
+    "You are bold, confident and a little dramatic!"
+  ];
+
+  result.textContent =
+    "Your Halloween personality: " +
+    names[winner] + " — " + descriptions[winner];
+}
+</script>
+
+</body>
+</html>
